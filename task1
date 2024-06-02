@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct virus {
+    unsigned short SigSize;
+    char virusName[16];
+    unsigned char* sig;
+} virus;
+
+char sigFileName[256] = "signatures-L"; // Default file name
+
+void SetSigFileName() {
+    printf("Enter new signature file name: ");
+    scanf("%s", sigFileName);
+}
+
+virus* readVirus(FILE* file) {
+    virus* v = (virus*)malloc(sizeof(virus));
+    if (!v) return NULL;
+
+    // Read the first 18 bytes into the virus struct
+    if (fread(v, 1, 18, file) != 18) {
+        free(v);
+        return NULL;
+    }
+
+    // Allocate memory for the virus signature
+    v->sig = (unsigned char*)malloc(v->SigSize);
+    if (!v->sig) {
+        free(v);
+        return NULL;
+    }
+
+    // Read the virus signature
+    if (fread(v->sig, 1, v->SigSize, file) != v->SigSize) {
+        free(v->sig);
+        free(v);
+        return NULL;
+    }
+
+    return v;
+}
+
+void printVirus(virus* v) {
+    printf("Virus name: %s\n", v->virusName);
+    printf("Virus signature length: %d\n", v->SigSize);
+    printf("Virus signature: ");
+    for (int i = 0; i < v->SigSize; ++i) {
+        printf("%02X ", v->sig[i]);
+    }
+    printf("\n");
+}
+
+void processSignaturesFile(const char* fileName) {
+    FILE* file = fopen(fileName, "rb");
+    if (!file) {
+        perror("Error opening file");
+        return;
+    }
+
+    // Read the magic number (4 bytes)
+    char magicNumber[4];
+    if (fread(magicNumber, 1, 4, file) != 4) {
+        perror("Error reading magic number");
+        fclose(file);
+        return;
+    }
+
+    // Check the magic number
+    if (memcmp(magicNumber, "VIRL", 4) != 0 && memcmp(magicNumber, "VIRB", 4) != 0) {
+        fprintf(stderr, "Invalid magic number\n");
+        fclose(file);
+        return;
+    }
+
+    // Read and print viruses
+    virus* v;
+    while ((v = readVirus(file)) != NULL) {
+        printVirus(v);
+        free(v->sig);
+        free(v);
+    }
+
+    fclose(file);
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <file>\n", argv[0]);
+        return 1;
+    }
+
+    processSignaturesFile(argv[1]);
+    return 0;
+}

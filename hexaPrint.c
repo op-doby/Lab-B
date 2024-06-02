@@ -13,7 +13,7 @@ void PrintHex(const unsigned char *buffer, size_t len) {
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        fprintf(stderr, "Usage: %s <file>\n", argv[0]);////////CHANGEEEEEEEEEEEEEE
+        fprintf(stderr, "Usage: %s <file>\n", argv[0]);////////CHANGEEEEEEEEEEEEEE????????????????????
         return 1;
     }
 
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
         perror("ERROR: cannot open file");
         return 1;
     }
-    unsigned char buffer[16];//??????????????????????????????????????????
+    unsigned char buffer[16];
     size_t bytesRead;
 
     while ((bytesRead = fread(buffer, 1, sizeof(buffer), file)) > 0) {
