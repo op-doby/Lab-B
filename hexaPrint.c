@@ -13,7 +13,7 @@ void PrintHex(const unsigned char *buffer, size_t len) {
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        fprintf(stderr, "Usage: %s <file>\n", argv[0]);////////CHANGEEEEEEEEEEEEEE????????????????????
+        fprintf(stderr, "Usage: %s <file>\n", argv[0]);
         return 1;
     }
 

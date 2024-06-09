@@ -1,9 +1,8 @@
-/*.o
-hexaPrint 
-bubbleSort
-infected
-exampleFile
+.vscode/
 AntiVirus
+AntiVirus.o
 aaa
+exampleFile
+infected
 signatures-B
 signatures-L

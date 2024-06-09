@@ -69,8 +69,10 @@ void processSignaturesFile(const char* fileName) {
 
     // Check the magic number
     if (memcmp(magicNumber, "VIRL", 4) != 0 && memcmp(magicNumber, "VIRB", 4) != 0) {
-        fprintf(stderr, "Invalid magic number\n");
+        printf("Invalid magic number: %02X %02X %02X %02X\n", magicNumber[0], magicNumber[1], magicNumber[2], magicNumber[3]);
         fclose(file);
+        // fprintf(stderr, "Invalid magic number\n");
+        // fclose(file);
         return;
     }
 
