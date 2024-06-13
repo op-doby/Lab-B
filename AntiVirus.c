@@ -18,20 +18,20 @@ unsigned int fileSize = 0; // Default file size
 FILE* file;
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
+
+
+
+
+
+// Function to set the signature file name variable
 void SetSigFileName() {
-    char newSigFileName[256];
+    char newSigFileName[256]; // Buffer for user input
     printf("Enter new signature file name: ");
     scanf("%255s", newSigFileName); // Limit input to avoid buffer overflow
-
-    // Attempt to rename the file
-    if (rename(sigFileName, newSigFileName) != 0) {
-        perror("ERROR: could not rename file");
-    } else {
-        // Update the global variable with the new file name
-        strncpy(sigFileName, newSigFileName, sizeof(newSigFileName));
-        sigFileName[sizeof(sigFileName) - 1] = '\0';  // Ensure null termination
-        printf("File renamed successfully to %s\n", sigFileName);
-    }
+    // Update the global variable with the new file name
+    strncpy(sigFileName, newSigFileName, sizeof(sigFileName) - 1);
+    sigFileName[sizeof(sigFileName) - 1] = '\0';  // Ensure null termination
+    printf("Signature file name set to: %s\n", sigFileName);
 }
 
 virus* readVirus(FILE* file) {
